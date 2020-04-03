@@ -7,6 +7,16 @@ const expressSanitizer = require('express-sanitizer');
 var methodOverride = require('method-override')
 
 
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://voldy123:otaku123@cluster0-g4xgx.mongodb.net/test?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true });
+client.connect(err => {
+  const collection = client.db("test").collection("devices");
+  // perform actions on the collection object
+  client.close();
+});
+
+
 app.set("view engine", "ejs");
 app.use(methodOverride("_method")); 
 app.use(express.static("public"));
@@ -14,7 +24,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(expressSanitizer());
 
 // connect Mongoose to your DB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/blog_app');
+mongoose.connect(uri);
 
 
 var db = mongoose.connection;
